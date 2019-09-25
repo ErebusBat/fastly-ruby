@@ -3,7 +3,7 @@ require 'cgi'
 class Fastly
   # Acces Control List Entry configuration
   class ACLEntry < Base
-    attr_accessor :id, :service_id, :ip, :subnet, :acl_id, :negated, :comment
+    attr_accessor :id, :service_id, :ip, :subnet, :acl_id, :negated, :comment, :updated_at
 
     ##
     # :attr: ip
@@ -29,6 +29,19 @@ class Fastly
     # :attr: comment
     #
     # A descriptive note.
+
+    ##
+    # :attr: updated_at
+    #
+    # Timestamp of when the entry was last updated
+
+    def updated_at=(value)
+      if value.is_a?(String)
+        @updated_at = DateTime.parse(value)
+      else
+        @updated_at = value
+      end
+    end
 
     def self.get_path(service_id, acl_id, id)
       "/service/#{service_id}/acl/#{acl_id}/entry/#{CGI.escape(id)}"
